@@ -167,29 +167,33 @@
       const fullName = document.getElementById('fullName').value;
       const phone = document.getElementById('phone').value;
       const location = document.getElementById('location').value;
-      const idFile = document.getElementById('idFile').files[0];
       const urgent = document.getElementById('urgent').value;
       const household = document.getElementById('household').value;
       const notes = document.getElementById('notes').value;
 
-      if (!fullName || !phone || !location || !idFile) {
+      if (!fullName || !phone || !location) {
         msg.style.color = 'crimson';
         msg.textContent = 'جميع الحقول مطلوبة.';
         return;
       }
 
-      const endpoint = 'https://api.telegram.org/bot<bot_token>/sendMessage';
-      const fd = new FormData();
-      fd.append('fullName', fullName);
-      fd.append('phone', phone);
-      fd.append('location', location);
-      fd.append('urgent', urgent);
-      fd.append('household', household);
-      fd.append('notes', notes);
-      fd.append('idFile', idFile);
+      const endpoint = 'https://api.telegram.org/bot<7685872798:AAHYD4pnuZSVqy5wS87OzZ0qyeaRERyRTy4>/sendMessage';
+      const chat_id = '<5946998458>';
+
+      const messageData = {
+        chat_id: chat_id,
+        text: `طلب جديد من:\nالاسم: ${fullName}\nالهاتف: ${phone}\nالمكان: ${location}\nهل يحتاج مساعدات غذائية الآن؟: ${urgent}\nعدد أفراد الأسرة: ${household}\nملاحظات: ${notes}`,
+      };
 
       try {
-        const res = await fetch(endpoint, { method: 'POST', body: fd });
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(messageData),
+        });
+
         if (res.ok) {
           msg.style.color = 'green';
           msg.textContent = 'تم إرسال الطلب بنجاح. شكراً.';
